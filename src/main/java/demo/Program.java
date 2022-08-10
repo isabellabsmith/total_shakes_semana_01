@@ -17,7 +17,7 @@ public class Program {
         Cardapio cardapio = new Cardapio();
 
         Base sorvete = new Base(TipoBase.Sorvete);
-        Base iogurte = new Base(TipoBase.Iorgute);
+        Base iogurte = new Base(TipoBase.Iogurte);
         Fruta banana = new Fruta(TipoFruta.Banana);
         Fruta morango = new Fruta(TipoFruta.Morango);
         Topping mel = new Topping(TipoTopping.Mel);
