@@ -16,22 +16,37 @@ public class Cardapio {
     }
 
     public void adicionarIngrediente(Ingrediente ingrediente,Double preco){
-        //TODO
+        if(preco > 0) {
+            precos.put(ingrediente, preco);
+        }  else {
+            throw new IllegalArgumentException("Preco invalido.");
+        }
     }
 
     public boolean atualizarIngrediente(Ingrediente ingrediente,Double preco){
-       //TODO
+        if(precos.containsKey(ingrediente)) {
+            precos.replace(ingrediente, preco);
+        }  else {
+            throw new IllegalArgumentException("Ingrediente nao existe no cardapio.");
+        }
         return true;
     }
 
     public boolean removerIngrediente(Ingrediente ingrediente){
-       //TODO
+        if(precos.containsKey(ingrediente)) {
+            precos.remove(ingrediente);
+        }  else {
+            throw new IllegalArgumentException("Ingrediente nao existe no cardapio.");
+        }
         return true;
     }
 
     public Double buscarPreco(Ingrediente ingrediente){
-        //TODO
-        return 0.0;
+        if(precos.containsKey(ingrediente)) {
+            return precos.get(ingrediente);
+        }  else {
+            throw new IllegalArgumentException("Ingrediente nao existe no cardapio.");
+        }
     }
 
     @Override

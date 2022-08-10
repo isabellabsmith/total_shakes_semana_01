@@ -10,7 +10,21 @@ public class ItemPedido {
         this.shake = shake;
         this.quantidade = quantidade;
     }
+public enum TipoTamanho {
+    //IMPLEMENTE A LOGICA DO ENUM
+    P,M,G;
+    //TODO
+    public final double multiplicador(TipoTamanho tamanho) {
+        if(tamanho == TipoTamanho.P) {
+            return 1.0;
+        } else if (tamanho == TipoTamanho.M) {
+            return 1.30;
+        } else {
+            return 1.50;
+        }
+    }
 
+}
     public Shake getShake() {
         return shake;
     }
