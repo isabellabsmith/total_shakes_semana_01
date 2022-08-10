@@ -32,8 +32,7 @@ public class Pedido{
     }
 
     public double calcularTotal(Cardapio cardapio){
-        double total = 0.0;
-        double precoAdicionais = 0;
+        double total = 0;
 
         for (ItemPedido itemPedido : itens){
             Base base = itemPedido.getShake().getBase();
@@ -49,18 +48,24 @@ public class Pedido{
             }
         }
 
+        total += this.calcularAdicionais(cardapio);
+        return total;
+    }
+
+    private double calcularAdicionais(Cardapio cardapio) {
+        double precoTotalAdicionais = 0;
         for(ItemPedido itemPedido : itens ) {
+            double precoAdicionais = 0;
             List<Adicional> adicionais = itemPedido.getShake().getAdicionais();
 
-            if(!adicionais.isEmpty()) {
-                for (Adicional adicional : adicionais) {
-                    precoAdicionais += cardapio.buscarPreco(adicional);
-                }
-                total += precoAdicionais * itemPedido.getQuantidade();
+            for(Adicional adicional : adicionais) {
+                precoAdicionais += cardapio.buscarPreco(adicional);
             }
+
+            precoTotalAdicionais += precoAdicionais * itemPedido.getQuantidade();
         }
 
-        return total;
+        return precoTotalAdicionais;
     }
 
     public void adicionarItemPedido(ItemPedido itemPedidoAdicionado){

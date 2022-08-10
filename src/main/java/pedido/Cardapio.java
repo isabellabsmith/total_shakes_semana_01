@@ -24,11 +24,16 @@ public class Cardapio {
     }
 
     public boolean atualizarIngrediente(Ingrediente ingrediente,Double preco){
-        if(precos.containsKey(ingrediente)) {
-            precos.replace(ingrediente, preco);
-        }  else {
-            throw new IllegalArgumentException("Ingrediente nao existe no cardapio.");
+        if(preco > 0) {
+            if(precos.containsKey(ingrediente)) {
+                precos.replace(ingrediente, preco);
+            }  else {
+                throw new IllegalArgumentException("Ingrediente nao existe no cardapio.");
+            }
+        } else {
+            throw new IllegalArgumentException("Preco invalido.");
         }
+
         return true;
     }
 
