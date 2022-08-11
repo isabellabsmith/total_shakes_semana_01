@@ -11,9 +11,7 @@ public class ItemPedido {
         this.quantidade = quantidade;
     }
 public enum TipoTamanho {
-    //IMPLEMENTE A LOGICA DO ENUM
     P,M,G;
-    //TODO
     public final double multiplicador(TipoTamanho tamanho) {
         if(tamanho == TipoTamanho.P) {
             return 1.0;
