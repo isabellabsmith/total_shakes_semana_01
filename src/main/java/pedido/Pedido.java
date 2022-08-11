@@ -6,6 +6,7 @@ import produto.TipoTamanho;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Pedido{
 
@@ -68,19 +69,24 @@ public class Pedido{
         return precoTotalAdicionais;
     }
 
-    public void adicionarItemPedido(ItemPedido itemPedidoAdicionado){
-        boolean existe = false;
-        int quantidade = 0;
-        int index = 0;
+    int quantidade = 0;
+    int index = 0;
+
+    public boolean existeItem(ItemPedido itemPedido) {
         for(ItemPedido item: itens) {
-            if (item.getShake().toString().equals(itemPedidoAdicionado.getShake().toString())) {
-                existe = true;
+            if (item.getShake().toString().equals(itemPedido.getShake().toString())) {
                 quantidade = item.getQuantidade();
                 index = itens.indexOf(item);
-                break;
+                return true;
+            } else {
+                return false;
             }
         }
-        if(existe) {
+        return false;
+    }
+
+    public void adicionarItemPedido(ItemPedido itemPedidoAdicionado){
+        if(existeItem(itemPedidoAdicionado)) {
             itemPedidoAdicionado.setQuantidade(quantidade + itemPedidoAdicionado.getQuantidade());
             itens.set(index, itemPedidoAdicionado);
         } else {
@@ -89,18 +95,7 @@ public class Pedido{
     }
 
     public boolean removeItemPedido(ItemPedido itemPedidoRemovido) {
-        boolean existe = false;
-        int quantidade = 0;
-        int index = 0;
-        for(ItemPedido item: itens) {
-            if (item.getShake().toString().equals(itemPedidoRemovido.getShake().toString())) {
-                existe = true;
-                quantidade = item.getQuantidade();
-                index = itens.indexOf(item);
-                break;
-            }
-        }
-        if(existe) {
+        if(existeItem(itemPedidoRemovido)) {
             itemPedidoRemovido.setQuantidade(quantidade - 1);
             itens.set(index, itemPedidoRemovido);
             if(quantidade - 1 <= 0) {
