@@ -33,40 +33,15 @@ public class Pedido{
     }
 
     public double calcularTotal(Cardapio cardapio){
-        double total = 0;
-
-        for (ItemPedido itemPedido : itens){
-            Base base = itemPedido.getShake().getBase();
-            Double preco = cardapio.buscarPreco(base);
-            TipoTamanho tamanho = itemPedido.getShake().getTipoTamanho();
-
-            if(tamanho == TipoTamanho.P) {
-                total += preco * itemPedido.getQuantidade();
-            } else if (tamanho == TipoTamanho.M) {
-                total += preco * 1.3 * itemPedido.getQuantidade();
-            } else {
-                total += preco * 1.5 * itemPedido.getQuantidade();
-            }
-        }
-
-        total += this.calcularAdicionais(cardapio);
-        return total;
-    }
-
-    private double calcularAdicionais(Cardapio cardapio) {
-        double precoTotalAdicionais = 0;
-        for(ItemPedido itemPedido : itens ) {
-            double precoAdicionais = 0;
-            List<Adicional> adicionais = itemPedido.getShake().getAdicionais();
-
-            for(Adicional adicional : adicionais) {
-                precoAdicionais += cardapio.buscarPreco(adicional);
-            }
-
-            precoTotalAdicionais += precoAdicionais * itemPedido.getQuantidade();
-        }
-
-        return precoTotalAdicionais;
+        return itens.stream()
+                .map(itemPedido -> {
+                    final var shake = itemPedido.getShake();
+                    final var adicionais = shake.getAdicionais();
+                    final var precoBase = cardapio.buscarPreco(shake.getBase()) * shake.getTipoTamanho().multiplicador;
+                    final var precoAdicionais = adicionais.stream().map(cardapio::buscarPreco).reduce(0.0, Double::sum);
+                    return ((precoBase + precoAdicionais) * itemPedido.getQuantidade());
+                })
+                .reduce(0.0, Double::sum);
     }
 
     int quantidade = 0;
