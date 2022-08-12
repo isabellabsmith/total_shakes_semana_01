@@ -1,5 +1,7 @@
 package pedido;
 
+import exceptions.IngredienteInexistenteException;
+import exceptions.PrecoInvalidoException;
 import ingredientes.Ingrediente;
 
 import java.util.TreeMap;
@@ -15,43 +17,39 @@ public class Cardapio {
         return this.precos;
     }
 
-    public void adicionarIngrediente(Ingrediente ingrediente,Double preco){
-        if(preco > 0) {
-            precos.put(ingrediente, preco);
-        }  else {
-            throw new IllegalArgumentException("Preco invalido.");
+    private void validarPreco(final Double preco) throws PrecoInvalidoException {
+        if(preco <=0) {
+            throw new PrecoInvalidoException();
         }
     }
 
-    public boolean atualizarIngrediente(Ingrediente ingrediente,Double preco){
-        if(preco > 0) {
-            if(precos.containsKey(ingrediente)) {
-                precos.replace(ingrediente, preco);
-            }  else {
-                throw new IllegalArgumentException("Ingrediente nao existe no cardapio.");
-            }
-        } else {
-            throw new IllegalArgumentException("Preco invalido.");
+    private void validarIngrediente(final Ingrediente ingrediente) throws IngredienteInexistenteException {
+        if(!precos.containsKey(ingrediente)) {
+            throw new IngredienteInexistenteException();
         }
+    }
 
+    public void adicionarIngrediente(Ingrediente ingrediente,Double preco){
+        validarPreco(preco);
+        precos.put(ingrediente, preco);
+    }
+
+    public boolean atualizarIngrediente(Ingrediente ingrediente,Double preco){
+        validarIngrediente(ingrediente);
+        validarPreco(preco);
+        precos.replace(ingrediente, preco);
         return true;
     }
 
     public boolean removerIngrediente(Ingrediente ingrediente){
-        if(precos.containsKey(ingrediente)) {
-            precos.remove(ingrediente);
-        }  else {
-            throw new IllegalArgumentException("Ingrediente nao existe no cardapio.");
-        }
+        validarIngrediente(ingrediente);
+        precos.remove(ingrediente);
         return true;
     }
 
     public Double buscarPreco(Ingrediente ingrediente){
-        if(precos.containsKey(ingrediente)) {
-            return precos.get(ingrediente);
-        }  else {
-            throw new IllegalArgumentException("Ingrediente nao existe no cardapio.");
-        }
+        validarIngrediente(ingrediente);
+        return precos.get(ingrediente);
     }
 
     @Override
