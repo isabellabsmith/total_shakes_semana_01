@@ -1,5 +1,6 @@
 package pedido;
 
+import exceptions.ItemNaoExisteException;
 import ingredientes.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -213,7 +214,7 @@ public class PedidoTest{
             fail("Excecao nao encontrada.");
         }catch(Throwable e){
             assertEquals("Item nao existe no pedido.", e.getMessage());
-            assertEquals(IllegalArgumentException.class, e.getClass());
+            assertEquals(ItemNaoExisteException.class, e.getClass());
         }
     }
 

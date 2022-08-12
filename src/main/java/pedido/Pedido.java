@@ -1,5 +1,7 @@
 package pedido;
 
+import exceptions.IngredienteInexistenteException;
+import exceptions.ItemNaoExisteException;
 import ingredientes.Adicional;
 import ingredientes.Base;
 import produto.TipoTamanho;
@@ -69,7 +71,7 @@ public class Pedido{
         }
     }
 
-    public boolean removeItemPedido(ItemPedido itemPedidoRemovido) {
+    public void removeItemPedido(ItemPedido itemPedidoRemovido) throws ItemNaoExisteException {
         if(existeItem(itemPedidoRemovido)) {
             itemPedidoRemovido.setQuantidade(quantidade - 1);
             itens.set(index, itemPedidoRemovido);
@@ -77,9 +79,8 @@ public class Pedido{
                 itens.remove(itemPedidoRemovido);
             }
         } else {
-            throw new IllegalArgumentException("Item nao existe no pedido.");
+            throw new ItemNaoExisteException();
         }
-        return false;
     }
 
     @Override
