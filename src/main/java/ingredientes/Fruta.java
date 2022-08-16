@@ -1,7 +1,7 @@
 package ingredientes;
 
 public class Fruta  implements Adicional,Comparable<Ingrediente>{
-     private TipoFruta tipoFruta;
+     private final TipoFruta tipoFruta;
 
      public Fruta(TipoFruta tipoFruta) {
           this.tipoFruta = tipoFruta;
@@ -11,11 +11,9 @@ public class Fruta  implements Adicional,Comparable<Ingrediente>{
           return this.tipoFruta;
      }
 
-
-     //É necessário consertar o compareTo, para imprimir na ordem correta.
      @Override
      public int compareTo(Ingrediente ingrediente) {
-          return ingrediente.obterTipo().toString().compareTo(this.obterTipo().toString());
+          return this.obterTipo().toString().compareToIgnoreCase(ingrediente.toString());
      }
 
      @Override

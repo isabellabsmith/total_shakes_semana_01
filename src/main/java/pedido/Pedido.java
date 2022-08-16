@@ -1,6 +1,14 @@
 package pedido;
 
+import exceptions.IngredienteInexistenteException;
+import exceptions.ItemNaoExisteException;
+import ingredientes.Adicional;
+import ingredientes.Base;
+import produto.TipoTamanho;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Pedido{
 
@@ -27,23 +35,52 @@ public class Pedido{
     }
 
     public double calcularTotal(Cardapio cardapio){
-        double total= 0;
-        //TODO
-        return total;
+        return itens.stream()
+                .map(itemPedido -> {
+                    final var shake = itemPedido.getShake();
+                    final var adicionais = shake.getAdicionais();
+                    final var precoBase = cardapio.buscarPreco(shake.getBase()) * shake.getTipoTamanho().multiplicador;
+                    final var precoAdicionais = adicionais.stream().map(cardapio::buscarPreco).reduce(0.0, Double::sum);
+                    return ((precoBase + precoAdicionais) * itemPedido.getQuantidade());
+                })
+                .reduce(0.0, Double::sum);
+    }
+
+    int quantidade = 0;
+    int index = 0;
+
+    public boolean existeItem(ItemPedido itemPedido) {
+        for(ItemPedido item: itens) {
+            if (item.getShake().toString().equals(itemPedido.getShake().toString())) {
+                quantidade = item.getQuantidade();
+                index = itens.indexOf(item);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 
     public void adicionarItemPedido(ItemPedido itemPedidoAdicionado){
-        //TODO
+        if(existeItem(itemPedidoAdicionado)) {
+            itemPedidoAdicionado.setQuantidade(quantidade + itemPedidoAdicionado.getQuantidade());
+            itens.set(index, itemPedidoAdicionado);
+        } else {
+            itens.add(itemPedidoAdicionado);
+        }
     }
 
-    public boolean removeItemPedido(ItemPedido itemPedidoRemovido) {
-        //substitua o true por uma condição
-        if (true) {
-            //TODO
+    public void removeItemPedido(ItemPedido itemPedidoRemovido) throws ItemNaoExisteException {
+        if(existeItem(itemPedidoRemovido)) {
+            itemPedidoRemovido.setQuantidade(quantidade - 1);
+            itens.set(index, itemPedidoRemovido);
+            if(quantidade - 1 <= 0) {
+                itens.remove(itemPedidoRemovido);
+            }
         } else {
-            throw new IllegalArgumentException("Item nao existe no pedido.");
+            throw new ItemNaoExisteException();
         }
-        return false;
     }
 
     @Override
