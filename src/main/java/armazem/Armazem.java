@@ -59,7 +59,7 @@ public class Armazem {
         }
     }
 
-    private void verificarQuantidade(Integer quantidadeIngrediente, Integer quantidade) throws QuantidadeInvalida {
+    private void verificarQuantidade(Integer quantidade) throws QuantidadeInvalida {
         if(quantidade < 0)
             throw new QuantidadeInvalida();
     }
