@@ -135,9 +135,9 @@ class ArmazemTest {
         @Test
         void teste_reduzir_quantidade_igualOuMenorAZero() {
             armazem.cadastrarIngredienteEmEstoque(fruta);
-            Exception excecao = assertThrows(IllegalArgumentException.class, () -> armazem.reduzirQuantidadeDoIngredienteEmEstoque(fruta, 2));
+            Exception excecao = assertThrows(IllegalArgumentException.class, () -> armazem.reduzirQuantidadeDoIngredienteEmEstoque(fruta, -10));
 
-            assertEquals("Quantidade invalida.", excecao.getMessage());
+            assertEquals("Quantidade inválida.", excecao.getMessage());
         }
     }
 

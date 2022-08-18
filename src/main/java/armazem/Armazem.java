@@ -24,9 +24,26 @@ public class Armazem {
     }
 
     public void adicionarQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) {
+        int quantidadeAtual = consultarQuantidadeDoIngredienteEmEstoque(ingrediente);
+        verificarQuantidade(consultarQuantidadeDoIngredienteEmEstoque(ingrediente), quantidade);
+        if(existeIngrediente(ingrediente)) {
+            estoque.put(ingrediente, quantidadeAtual + quantidade);
+        } else {
+            throw new IllegalArgumentException("Ingrediente não encontrado.");
+        }
     }
 
     public void reduzirQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) {
+        int quantidadeAtual = consultarQuantidadeDoIngredienteEmEstoque(ingrediente);
+        verificarQuantidade(consultarQuantidadeDoIngredienteEmEstoque(ingrediente), quantidade);
+        if(existeIngrediente(ingrediente) && quantidadeAtual != 1) {
+            estoque.put(ingrediente, quantidadeAtual - quantidade);
+        } else if(quantidadeAtual == 1) {
+            estoque.remove(ingrediente);
+        }
+        else {
+            throw new IllegalArgumentException("Ingrediente não encontrado.");
+        }
     }
 
     public Integer consultarQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente) {
@@ -39,5 +56,10 @@ public class Armazem {
 
     public boolean existeIngrediente(Ingrediente ingrediente) {
         return estoque.containsKey(ingrediente);
+    }
+
+    private void verificarQuantidade(Integer quantidadeIngrediente, Integer quantidade) {
+        if(quantidade < 0)
+            throw new IllegalArgumentException("Quantidade inválida.");
     }
 }
