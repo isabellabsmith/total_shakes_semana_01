@@ -1,5 +1,9 @@
 package armazem;
 
+import exceptions.IngredienteJaCadastrado;
+import exceptions.IngredienteNaoEncontrado;
+import exceptions.PrecoInvalidoException;
+import exceptions.QuantidadeInvalida;
 import ingredientes.Ingrediente;
 
 import java.util.TreeMap;
@@ -8,58 +12,55 @@ public class Armazem {
     Armazem() {}
     TreeMap<Ingrediente, Integer> estoque = new TreeMap<>();
 
-    public void cadastrarIngredienteEmEstoque(Ingrediente ingrediente) {
+    public void cadastrarIngredienteEmEstoque(Ingrediente ingrediente) throws IngredienteJaCadastrado {
         if(existeIngrediente(ingrediente)) {
-            throw new IllegalArgumentException("Ingrediente já cadastrado.");
+            throw new IngredienteJaCadastrado();
         }
         estoque.put(ingrediente, 0);
     }
 
     public void descadastrarIngredienteEmEstoque(Ingrediente ingrediente) {
-        if(existeIngrediente(ingrediente)) {
-            estoque.remove(ingrediente);
-        } else {
-            throw new IllegalArgumentException("Ingrediente não encontrado.");
-        }
+        ingredienteEncontrado(ingrediente);
+        estoque.remove(ingrediente);
     }
 
     public void adicionarQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) {
+        ingredienteEncontrado(ingrediente);
         int quantidadeAtual = consultarQuantidadeDoIngredienteEmEstoque(ingrediente);
         verificarQuantidade(consultarQuantidadeDoIngredienteEmEstoque(ingrediente), quantidade);
-        if(existeIngrediente(ingrediente)) {
-            estoque.put(ingrediente, quantidadeAtual + quantidade);
-        } else {
-            throw new IllegalArgumentException("Ingrediente não encontrado.");
-        }
+        estoque.put(ingrediente, quantidadeAtual + quantidade);
     }
 
     public void reduzirQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) {
+        ingredienteEncontrado(ingrediente);
         int quantidadeAtual = consultarQuantidadeDoIngredienteEmEstoque(ingrediente);
         verificarQuantidade(consultarQuantidadeDoIngredienteEmEstoque(ingrediente), quantidade);
-        if(existeIngrediente(ingrediente) && quantidadeAtual != 1) {
+        if(quantidadeAtual != 1) {
             estoque.put(ingrediente, quantidadeAtual - quantidade);
-        } else if(quantidadeAtual == 1) {
+        } else {
             estoque.remove(ingrediente);
-        }
-        else {
-            throw new IllegalArgumentException("Ingrediente não encontrado.");
         }
     }
 
     public Integer consultarQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente) {
-        if(existeIngrediente(ingrediente) && estoque.get(ingrediente) != null) {
-            return estoque.get(ingrediente);
-        } else {
-            throw new IllegalArgumentException("Ingrediente não encontrado.");
-        }
+        ingredienteEncontrado(ingrediente);
+        return estoque.get(ingrediente);
     }
 
     public boolean existeIngrediente(Ingrediente ingrediente) {
         return estoque.containsKey(ingrediente);
     }
 
-    private void verificarQuantidade(Integer quantidadeIngrediente, Integer quantidade) {
+    public boolean ingredienteEncontrado(Ingrediente ingrediente) throws IngredienteNaoEncontrado {
+        if (existeIngrediente(ingrediente)) {
+            return true;
+        } else {
+            throw new IngredienteNaoEncontrado();
+        }
+    }
+
+    private void verificarQuantidade(Integer quantidadeIngrediente, Integer quantidade) throws QuantidadeInvalida {
         if(quantidade < 0)
-            throw new IllegalArgumentException("Quantidade inválida.");
+            throw new QuantidadeInvalida();
     }
 }
