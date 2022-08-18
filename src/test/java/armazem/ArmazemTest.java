@@ -116,17 +116,22 @@ class ArmazemTest {
             armazem.adicionarQuantidadeDoIngredienteEmEstoque(fruta, 1);
             armazem.reduzirQuantidadeDoIngredienteEmEstoque(fruta, 1);
 
-            assertThrows(IllegalArgumentException.class, armazem.consultarQuantidadeDoIngredienteEmEstoque(fruta));
+            assertEquals(0, armazem.getEstoque().size());
         }
 
         @Test
         void teste_reduzir_quantidade_exception_ingredienteNaoEncontrado() {
+            Exception excecao = assertThrows(IllegalArgumentException.class, () -> armazem.reduzirQuantidadeDoIngredienteEmEstoque(topping, 2));
 
+            assertEquals("Ingrediente não encontrado", excecao.getMessage());
         }
 
         @Test
         void teste_reduzir_quantidade_igualOuMenorAZero() {
+            armazem.cadastrarIngredienteEmEstoque(fruta);
+            Exception excecao = assertThrows(IllegalArgumentException.class, () -> armazem.reduzirQuantidadeDoIngredienteEmEstoque(fruta, 2));
 
+            assertEquals("Quantidade invalida", excecao.getMessage());
         }
     }
 
@@ -134,12 +139,20 @@ class ArmazemTest {
     class ConsultarQuantidade {
         @Test
         void teste_consultar_quantidade_ingrediente_properly() {
+            armazem.cadastrarIngredienteEmEstoque(fruta);
+            armazem.adicionarQuantidadeDoIngredienteEmEstoque(fruta, 5);
 
+            armazem.cadastrarIngredienteEmEstoque(topping);
+
+            assertEquals(5, armazem.consultarQuantidadeDoIngredienteEmEstoque(fruta));
+            assertEquals(0, armazem.consultarQuantidadeDoIngredienteEmEstoque(topping));
         }
 
         @Test
         void teste_encontrar_quantidade_exception_ingredienteNaoEncontrado() {
+            Exception excecao = assertThrows(IllegalArgumentException.class, () -> armazem.consultarQuantidadeDoIngredienteEmEstoque(base));
 
+            assertEquals("Ingrediente não encontrado", excecao.getMessage());
         }
     }
 }

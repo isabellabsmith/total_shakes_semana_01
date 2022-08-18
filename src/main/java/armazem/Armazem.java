@@ -11,6 +11,10 @@ public class Armazem {
 
     Ingrediente ingrediente;
 
+    public TreeMap<Ingrediente, Integer> getEstoque() {
+        return estoque;
+    }
+
     public void cadastrarIngredienteEmEstoque(Ingrediente ingrediente) {}
 
     public void descadastrarIngredienteEmEstoque(Ingrediente ingrediente) {}
