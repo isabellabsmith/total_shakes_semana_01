@@ -2,6 +2,7 @@ package armazem;
 
 import ingredientes.*;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -20,6 +21,11 @@ class ArmazemTest {
         fruta = new Fruta(TipoFruta.MORANGO);
         base = new Base(TipoBase.IOGURTE);
         topping = new Topping(TipoTopping.MEL);
+    }
+
+    @BeforeEach
+    void setup() {
+        armazem = new Armazem();
     }
 
     @Nested
@@ -44,7 +50,7 @@ class ArmazemTest {
                 armazem.cadastrarIngredienteEmEstoque(base);
             });
 
-            assertEquals("Ingrediente já cadastrado", excecao.getMessage());
+            assertEquals("Ingrediente já cadastrado.", excecao.getMessage());
         }
     }
 
@@ -55,7 +61,7 @@ class ArmazemTest {
             armazem.cadastrarIngredienteEmEstoque(fruta);
             armazem.descadastrarIngredienteEmEstoque(fruta);
 
-            assertEquals(0, armazem.consultarQuantidadeDoIngredienteEmEstoque(fruta));
+            assertFalse(armazem.existeIngrediente(fruta));
         }
 
         @Test
@@ -67,7 +73,7 @@ class ArmazemTest {
                 armazem.consultarQuantidadeDoIngredienteEmEstoque(base);
             });
 
-            assertEquals("Ingrediente não encontrado", excecao.getMessage());
+            assertEquals("Ingrediente não encontrado.", excecao.getMessage());
             }
         }
 
@@ -86,7 +92,7 @@ class ArmazemTest {
             Exception excecao = assertThrows(IllegalArgumentException.class, () ->
                     armazem.adicionarQuantidadeDoIngredienteEmEstoque(topping, 5));
 
-            assertEquals("Ingrediente não encontrado", excecao.getMessage());
+            assertEquals("Ingrediente não encontrado.", excecao.getMessage());
         }
 
         @Test
@@ -95,7 +101,7 @@ class ArmazemTest {
             Exception excecao = assertThrows(IllegalArgumentException.class, () ->
                     armazem.adicionarQuantidadeDoIngredienteEmEstoque(base, -10));
 
-            assertEquals("Quantidade inválida", excecao.getMessage());
+            assertEquals("Quantidade inválida.", excecao.getMessage());
         }
     }
 
@@ -116,14 +122,14 @@ class ArmazemTest {
             armazem.adicionarQuantidadeDoIngredienteEmEstoque(fruta, 1);
             armazem.reduzirQuantidadeDoIngredienteEmEstoque(fruta, 1);
 
-            assertEquals(0, armazem.getEstoque().size());
+            assertEquals(false, armazem.existeIngrediente(fruta));
         }
 
         @Test
         void teste_reduzir_quantidade_exception_ingredienteNaoEncontrado() {
             Exception excecao = assertThrows(IllegalArgumentException.class, () -> armazem.reduzirQuantidadeDoIngredienteEmEstoque(topping, 2));
 
-            assertEquals("Ingrediente não encontrado", excecao.getMessage());
+            assertEquals("Ingrediente não encontrado.", excecao.getMessage());
         }
 
         @Test
@@ -131,7 +137,7 @@ class ArmazemTest {
             armazem.cadastrarIngredienteEmEstoque(fruta);
             Exception excecao = assertThrows(IllegalArgumentException.class, () -> armazem.reduzirQuantidadeDoIngredienteEmEstoque(fruta, 2));
 
-            assertEquals("Quantidade invalida", excecao.getMessage());
+            assertEquals("Quantidade invalida.", excecao.getMessage());
         }
     }
 
@@ -152,7 +158,7 @@ class ArmazemTest {
         void teste_encontrar_quantidade_exception_ingredienteNaoEncontrado() {
             Exception excecao = assertThrows(IllegalArgumentException.class, () -> armazem.consultarQuantidadeDoIngredienteEmEstoque(base));
 
-            assertEquals("Ingrediente não encontrado", excecao.getMessage());
+            assertEquals("Ingrediente não encontrado.", excecao.getMessage());
         }
     }
 }
