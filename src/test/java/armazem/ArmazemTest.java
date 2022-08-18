@@ -17,7 +17,6 @@ class ArmazemTest {
 
     @BeforeAll
     static void beforeAll() {
-        armazem = new Armazem();
         fruta = new Fruta(TipoFruta.MORANGO);
         base = new Base(TipoBase.IOGURTE);
         topping = new Topping(TipoTopping.MEL);
