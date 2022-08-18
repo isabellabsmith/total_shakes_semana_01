@@ -27,14 +27,14 @@ public class Armazem {
     public void adicionarQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) {
         ingredienteEncontrado(ingrediente);
         int quantidadeAtual = consultarQuantidadeDoIngredienteEmEstoque(ingrediente);
-        verificarQuantidade(consultarQuantidadeDoIngredienteEmEstoque(ingrediente), quantidade);
+        verificarQuantidade(quantidade);
         estoque.put(ingrediente, quantidadeAtual + quantidade);
     }
 
     public void reduzirQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) {
         ingredienteEncontrado(ingrediente);
         int quantidadeAtual = consultarQuantidadeDoIngredienteEmEstoque(ingrediente);
-        verificarQuantidade(consultarQuantidadeDoIngredienteEmEstoque(ingrediente), quantidade);
+        verificarQuantidade(quantidade);
         if(quantidadeAtual != 1) {
             estoque.put(ingrediente, quantidadeAtual - quantidade);
         } else {
