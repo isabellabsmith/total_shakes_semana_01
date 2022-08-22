@@ -1,8 +1,10 @@
 package armazem;
 
 import ingredientes.*;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,7 +42,7 @@ class ArmazemTest {
 
     @DisplayName("Cadastrar ingrediente já cadastrado")
     @Test
-    void  teste_cadastrar_ingrediente_armazem_exception_ingredienteJaCadastrado() {
+    void teste_cadastrar_ingrediente_armazem_exception_ingredienteJaCadastrado() {
         Exception excecao = assertThrows(IllegalArgumentException.class, () -> {
             armazem.cadastrarIngredienteEmEstoque(base);
             armazem.cadastrarIngredienteEmEstoque(base);
@@ -109,14 +111,17 @@ class ArmazemTest {
         assertEquals(2, armazem.consultarQuantidadeDoIngredienteEmEstoque(fruta));
     }
 
-    @DisplayName("Reduzir quantidade de ingrediente (quantidadeOriginal=1)")
+    @DisplayName("Reduzir quantidade de ingrediente maior que a existente em Armazem")
     @Test
     void teste_reduzir_quantidade_ingrediente_quantidadeIgualA1() {
         armazem.cadastrarIngredienteEmEstoque(fruta);
         armazem.adicionarQuantidadeDoIngredienteEmEstoque(fruta, 1);
-        armazem.reduzirQuantidadeDoIngredienteEmEstoque(fruta, 1);
 
-        assertEquals(false, armazem.existeIngrediente(fruta));
+        Exception excecao = assertThrows(IllegalArgumentException.class, () -> {
+            armazem.reduzirQuantidadeDoIngredienteEmEstoque(fruta, 4);
+        });
+
+        assertEquals("Quantidade inválida.", excecao.getMessage());
     }
 
     @DisplayName("Reduzir quantidade de ingrediente inexistente")

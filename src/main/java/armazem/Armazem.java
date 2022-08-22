@@ -2,18 +2,19 @@ package armazem;
 
 import exceptions.IngredienteJaCadastrado;
 import exceptions.IngredienteNaoEncontrado;
-import exceptions.PrecoInvalidoException;
 import exceptions.QuantidadeInvalida;
 import ingredientes.Ingrediente;
 
 import java.util.TreeMap;
 
 public class Armazem {
-    Armazem() {}
+    Armazem() {
+    }
+
     TreeMap<Ingrediente, Integer> estoque = new TreeMap<>();
 
     public void cadastrarIngredienteEmEstoque(Ingrediente ingrediente) throws IngredienteJaCadastrado {
-        if(existeIngrediente(ingrediente)) {
+        if (existeIngrediente(ingrediente)) {
             throw new IngredienteJaCadastrado();
         }
         estoque.put(ingrediente, 0);
@@ -31,14 +32,14 @@ public class Armazem {
         estoque.put(ingrediente, quantidadeAtual + quantidade);
     }
 
-    public void reduzirQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) {
+    public void reduzirQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) throws QuantidadeInvalida {
         ingredienteEncontrado(ingrediente);
         int quantidadeAtual = consultarQuantidadeDoIngredienteEmEstoque(ingrediente);
         verificarQuantidade(quantidade);
-        if(quantidadeAtual != 1) {
+        if (quantidadeAtual > quantidade) {
             estoque.put(ingrediente, quantidadeAtual - quantidade);
         } else {
-            estoque.remove(ingrediente);
+            throw new QuantidadeInvalida();
         }
     }
 
@@ -60,7 +61,7 @@ public class Armazem {
     }
 
     private void verificarQuantidade(Integer quantidade) throws QuantidadeInvalida {
-        if(quantidade < 0)
+        if (quantidade < 0)
             throw new QuantidadeInvalida();
     }
 }
