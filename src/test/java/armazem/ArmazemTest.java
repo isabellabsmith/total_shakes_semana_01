@@ -28,7 +28,7 @@ class ArmazemTest {
 
     @DisplayName("Cadastrar ingrediente corretamente")
     @Test
-    void teste_cadastrar_ingrediente_armazem_properly() {
+    void Should_ConsultQuantityOfIngredient_When_NewIngredientIsAddedProperly() {
         armazem.cadastrarIngredienteEmEstoque(fruta);
         armazem.cadastrarIngredienteEmEstoque(base);
         armazem.cadastrarIngredienteEmEstoque(topping);
@@ -42,7 +42,7 @@ class ArmazemTest {
 
     @DisplayName("Cadastrar ingrediente já cadastrado")
     @Test
-    void teste_cadastrar_ingrediente_armazem_exception_ingredienteJaCadastrado() {
+    void ShouldNot_BeAbleToAddIngredient_When_AlreadyExists() {
         Exception excecao = assertThrows(IllegalArgumentException.class, () -> {
             armazem.cadastrarIngredienteEmEstoque(base);
             armazem.cadastrarIngredienteEmEstoque(base);
@@ -53,7 +53,7 @@ class ArmazemTest {
 
     @DisplayName("Descadastrar ingrediente corretamente")
     @Test
-    void teste_descadastrar_ingrediente_armazem_properly() {
+    void Should_BeAbleToRemoveIngredient_When_IngredientExists() {
         armazem.cadastrarIngredienteEmEstoque(fruta);
         armazem.descadastrarIngredienteEmEstoque(fruta);
 
@@ -62,7 +62,7 @@ class ArmazemTest {
 
     @DisplayName("Descadastrar ingrediente inexistente")
     @Test
-    void teste_descadastrar_ingrediente_exception_ingredienteNaoEncontrado() {
+    void ShouldNot_RemoveIngredient_When_IngredientDoesNotExist() {
         armazem.cadastrarIngredienteEmEstoque(base);
         armazem.descadastrarIngredienteEmEstoque(base);
 
@@ -75,7 +75,7 @@ class ArmazemTest {
 
     @DisplayName("Adicionar quantidade de ingrediente corretamente")
     @Test
-    void teste_adicionar_quantidade_ingrediente_properly() {
+    void Should_AddQuantityOfIngredient_When_IngredientExists() {
         armazem.cadastrarIngredienteEmEstoque(fruta);
         armazem.adicionarQuantidadeDoIngredienteEmEstoque(fruta, 3);
 
@@ -84,7 +84,7 @@ class ArmazemTest {
 
     @DisplayName("Adicionar quantidade de ingrediente para ingrediente inexistente")
     @Test
-    void teste_adicionar_quantidade_exception_ingredienteNaoEncontrado() {
+    void ShouldNot_AddQuantityOfIngredient_When_IngredientDoesNotExist() {
         Exception excecao = assertThrows(IllegalArgumentException.class, () ->
                 armazem.adicionarQuantidadeDoIngredienteEmEstoque(topping, 5));
 
@@ -93,7 +93,7 @@ class ArmazemTest {
 
     @DisplayName("Adicionar quantidade negativa de ingrediente")
     @Test
-    void teste_adicionar_quantidade_igualOuMenorAZero() {
+    void ShouldNot_AddQuantityOfIngredient_WhenQuantityEqualsOrBelowZero() {
         armazem.cadastrarIngredienteEmEstoque(base);
         Exception excecao = assertThrows(IllegalArgumentException.class, () ->
                 armazem.adicionarQuantidadeDoIngredienteEmEstoque(base, -10));
@@ -103,7 +103,7 @@ class ArmazemTest {
 
     @DisplayName("Reduzir quantidade de ingrediente corretamente")
     @Test
-    void teste_reduzir_quantidade_ingrediente_properly() {
+    void Should_ReduceQuantityOfIngredient_When_IngredientExists() {
         armazem.cadastrarIngredienteEmEstoque(fruta);
         armazem.adicionarQuantidadeDoIngredienteEmEstoque(fruta, 3);
         armazem.reduzirQuantidadeDoIngredienteEmEstoque(fruta, 1);
@@ -113,7 +113,7 @@ class ArmazemTest {
 
     @DisplayName("Reduzir quantidade de ingrediente maior que a existente em Armazem")
     @Test
-    void teste_reduzir_quantidade_ingrediente_quantidadeIgualA1() {
+    void ShouldNot_ReduceQuantityOfIngredient_When_QuantityToRemoveIsBiggerThanCurrent() {
         armazem.cadastrarIngredienteEmEstoque(fruta);
         armazem.adicionarQuantidadeDoIngredienteEmEstoque(fruta, 1);
 
@@ -126,7 +126,7 @@ class ArmazemTest {
 
     @DisplayName("Reduzir quantidade de ingrediente inexistente")
     @Test
-    void teste_reduzir_quantidade_exception_ingredienteNaoEncontrado() {
+    void ShouldNot_ReduceQuantityOfIngredient_When_IngredientDoesNotExist() {
         Exception excecao = assertThrows(IllegalArgumentException.class, () -> armazem.reduzirQuantidadeDoIngredienteEmEstoque(topping, 2));
 
         assertEquals("Ingrediente não encontrado.", excecao.getMessage());
@@ -134,7 +134,7 @@ class ArmazemTest {
 
     @DisplayName("Reduzir quantidade negativa de ingrediente")
     @Test
-    void teste_reduzir_quantidade_igualOuMenorAZero() {
+    void ShouldNot_ReduceQuantityOfIngredient_When_InputQuantityBelowZero() {
         armazem.cadastrarIngredienteEmEstoque(fruta);
         Exception excecao = assertThrows(IllegalArgumentException.class, () -> armazem.reduzirQuantidadeDoIngredienteEmEstoque(fruta, -10));
 
@@ -143,7 +143,7 @@ class ArmazemTest {
 
     @DisplayName("Consultar quantidade de ingrediente corretamente")
     @Test
-    void teste_consultar_quantidade_ingrediente_properly() {
+    void Should_ConsultQuantityOfIngredient_When_IngredientExists() {
         armazem.cadastrarIngredienteEmEstoque(fruta);
         armazem.adicionarQuantidadeDoIngredienteEmEstoque(fruta, 5);
 
@@ -155,7 +155,7 @@ class ArmazemTest {
 
     @DisplayName("Consultar quantidade de ingrediente inexistente")
     @Test
-    void teste_encontrar_quantidade_exception_ingredienteNaoEncontrado() {
+    void ShouldNot_ConsultQuantityOfIngredient_When_IngredientDoesNotExist() {
         Exception excecao = assertThrows(IllegalArgumentException.class, () -> armazem.consultarQuantidadeDoIngredienteEmEstoque(base));
 
         assertEquals("Ingrediente não encontrado.", excecao.getMessage());
