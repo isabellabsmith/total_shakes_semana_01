@@ -63,6 +63,9 @@ public class Pedido{
     }
 
     public void adicionarItemPedido(ItemPedido itemPedidoAdicionado){
+        if(itens == null) {
+            throw new NullPointerException("Nao é possivel adicionar um ItemPedido a uma lista nula");
+        }
         if(existeItem(itemPedidoAdicionado)) {
             itemPedidoAdicionado.setQuantidade(quantidade + itemPedidoAdicionado.getQuantidade());
             itens.set(index, itemPedidoAdicionado);
